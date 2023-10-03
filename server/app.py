@@ -32,7 +32,7 @@ class IndexArticle(Resource):
     def get(self):
         articles = [article.to_dict() for article in Article.query.all()]
         return make_response(jsonify(articles), 200)
-
+    
 class ShowArticle(Resource):
 
     def get(self, id):
@@ -50,7 +50,7 @@ class ShowArticle(Resource):
             return {'message': 'Maximum pageview limit reached'}, 401
 
         return article_json, 200
-
+    
 class Login(Resource):
 
     def post(self):
@@ -81,28 +81,3 @@ class CheckSession(Resource):
         if user_id:
             user = User.query.filter(User.id == user_id).first()
             return user.to_dict(), 200
-        
-        return {}, 401
-
-class MemberOnlyIndex(Resource):
-    
-    def get(self):
-        pass
-
-class MemberOnlyArticle(Resource):
-    
-    def get(self, id):
-        pass
-
-api.add_resource(ClearSession, '/clear', endpoint='clear')
-api.add_resource(IndexArticle, '/articles', endpoint='article_list')
-api.add_resource(ShowArticle, '/articles/<int:id>', endpoint='show_article')
-api.add_resource(Login, '/login', endpoint='login')
-api.add_resource(Logout, '/logout', endpoint='logout')
-api.add_resource(CheckSession, '/check_session', endpoint='check_session')
-api.add_resource(MemberOnlyIndex, '/members_only_articles', endpoint='member_index')
-api.add_resource(MemberOnlyArticle, '/members_only_articles/<int:id>', endpoint='member_article')
-
-
-if __name__ == '__main__':
-    app.run(port=5555, debug=True)
